@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>Document</title>
+	<style>
+		*{
+			margin: 0;
+			padding: 0;
+		}
+		ul{
+			list-style: none;
+		}
+		.scroll-parent{
+			width: 100%;
+		}
+		.scroll{
+			background: gray;
+			width: 300%;
+			position: relative;
+			height: 150px;
+		}
+		.scroll li{
+			position:absolute;
+			background: green;
+			width: 2000px;
+			height: 150px;
+			text-align: center;
+			color: white;
+			top:0;
+			left:0;
+		}
+		.scroll li:nth-child(1){
+			background: green;
+		}
+		.scroll li:nth-child(2){
+			background: red;
+			left: 100%;
+		}
+	</style>
+
+</head>
+<body>
+	<ul class="scroll">
+		<li>1</li>
+		<li>2</li>
+	</ul>
+	
+	<script src="https://code.jquery.com/jquery-2.2.4.min.js"></script>
+	<script src="../jquery.movable-inifinite-scroll.js"></script> 
+	<script>
+		$('.scroll').movableInifiniteScroll();
+	</script>
+</body>
+</html>

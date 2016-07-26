@@ -1,25 +1,27 @@
 $.fn.movableInifiniteScroll = function() {
 	var target = this;
 
-	$(target).mousedown(function (event) {
+	var touchX = 0;
+
+	$(target).on('mousedown touchstart', function (event) {
+		touchX = (event.type == 'touchstart')? event.originalEvent.touches[0].pageX : event.clientX;
 		$(this)
 			.data('down', true)
-			.data('x', event.clientX)
-			.data('y', event.clientY);
+			.data('x', touchX);
 		
 		return false;
 		
 	})
 		.css({'overflow': 'hidden', 'cursor': 'move'})
-		.data('scrollLeft', 0);
+		.data('scrollLeft', 0)
 
-	$(target).mousemove(function (event) {
+	$(target).on('mousemove touchmove', function (event) {
 		if ($(target).data('down') == true) {
+			touchX = (event.type == 'touchmove')? event.originalEvent.touches[0].pageX : event.clientX;
+			var scrollLeft = -($(target).data('scrollLeft') + $(target).data('x') - touchX);
+			var width = $(target).children().eq(0).width();
 
-			var scrollLeft = -($(target).data('scrollLeft') + $(target).data('x') - event.clientX);
-			var width = $(target).find('li').width();
-
-			var count = Math.floor(-scrollLeft/width);
+			var count = Math.floor(-scrollLeft / width);
 
 			$(target).children().eq(0).css({left: scrollLeft + ((count != 0 && count % 2 != 0)? width * (count + 1): width * (count))});
 			$(target).children().eq(1).css({left: scrollLeft + ((count % 2 == 0)? width * (count + 1): width * (count))});
@@ -28,10 +30,12 @@ $.fn.movableInifiniteScroll = function() {
 		}
 	})
 	
-	$(target).mouseup(function (event) {
+	$(target).on('mouseup touchend', function (event) {
+		//No available pageX
+
 		$(target)
 			.data('down', false)
-			.data('scrollLeft', $(target).data('scrollLeft') + $(target).data('x') - event.clientX);
+			.data('scrollLeft', $(target).data('scrollLeft') + $(target).data('x') - touchX);
 	});
 
 	return this;
